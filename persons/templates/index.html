@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <script src="{% static 'js/jquery-2.1.0.js' %}"></script>
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
+
+</head>
+
+<body>
+
+    {% csrf_token %} 
+    {{ form }}
+    <button onclick="sendInfo();">submit</button>
+    <ul id='list'>
+        {% for p in people %}
+        <li>{{ p }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
