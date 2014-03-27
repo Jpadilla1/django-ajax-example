@@ -1,12 +1,12 @@
 from django.views.generic import FormView
 from django.http import HttpResponse
-from django.core import serializers
 
 from .models import Person
 from .forms import AddPersonForm
+from .mixins import AjaxableResponseMixin
 
 
-class Index(FormView):
+class Index(AjaxableResponseMixin, FormView):
     form_class = AddPersonForm
     success_url = "/"
     template_name = "index.html"
@@ -20,7 +20,12 @@ class Index(FormView):
 
     def form_valid(self, form):
         form.save()
+        response = super(AjaxableResponseMixin, self).form_valid(form)
         if self.request.is_ajax():
-            data = serializers.serialize('json', Person.objects.all())
-            return HttpResponse(data, mimetype="application/json")
-        return super(Index, self).form_valid(form)
+            data = {
+                'first_name': self.request.POST['first_name'],
+                'last_name': self.request.POST['last_name']
+            }
+            return self.render_to_json_response(data)
+        else:
+            return response

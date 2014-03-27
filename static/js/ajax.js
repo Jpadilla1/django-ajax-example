@@ -8,12 +8,9 @@ function sendInfo() {
         },
         dataType: 'json',
         success: function(data, textStatus, jqXHR) {
-            var html = "";
-            $.each(data, function(idx, obj) {
-              html += "<li>" + obj['fields']['first_name'] 
-                    + " " + obj['fields']['last_name'] + "</li>";
-            });
-            $('#list').html(html);
+            var html = "<li>" + data['first_name'] 
+                    + " " + data['last_name'] + "</li>";
+            $('#list').append(html);
         },
     });
 };
